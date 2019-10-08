@@ -25,11 +25,13 @@ import net.dv8tion.jda.api.events.role.RoleCreateEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.GuildController;
+import net.dv8tion.jda.api.requests.restaction.InviteAction;
 import oracle.net.aso.a;
 
 public class Ready extends ListenerAdapter{
 	StringBuffer result = new StringBuffer();
 	String result_text = "";
+	String errorMessage="";
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 		User author = event.getAuthor();
@@ -92,11 +94,17 @@ public class Ready extends ListenerAdapter{
 			event.getChannel().sendMessage(result_text).queue();
 		}else if(messageContent.contains("구인")) {
 			String getMessage[] = messageContent.split(" ");
-			VoiceChannel userChannel = event.getMessage().getGuild().getVoiceChannels().get(0);
-			String userChannelName = userChannel.getName();
-			int userChannerLenght = userChannel.getMembers().size();
-			//VoiceChannel returnChannel = event.getGuild().getVoiceChannelsByName(sendChannel,true).get(0);
-			event.getChannel().sendMessage("["+userChannelName+"] 에서 ["+getMessage[1]+"] 하실분 "+(5-userChannerLenght)+"명을 구합니다").queue();
+			//보낸사람
+			String userName = msg.getAuthor().getName();
+			//보이스채널인지 아닌지
+			//boolean a = msg.getMember().getVoiceState().inVoiceChannel();
+			//방이름
+			String userChannelName = msg.getMember().getVoiceState().getChannel().getName();
+			//보낸사람이 있는 보이스채널
+			List<VoiceChannel> c = event.getGuild().getVoiceChannelsByName(userChannelName, true);
+			int userChannerLenght = c.size();
+			//보낼 채널 id
+			event.getGuild().getTextChannelById("606035632451747850").sendMessage("```["+userChannelName+"] 에서 ["+getMessage[1]+"] 하실분 "+(5-userChannerLenght)+"명을 구합니다\n"+userName+"님이 작성```").queue();
 		}
 	}
 

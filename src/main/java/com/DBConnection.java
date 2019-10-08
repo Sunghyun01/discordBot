@@ -48,6 +48,9 @@ public class DBConnection {
 	
 	public static String showDB(String messageContent) {
 		String getMessage[] = messageContent.split(" ");
+		if(getMessage.length != 2) {
+			return "테이블명 적어라";
+		}
 		String table = getMessage[1];
 		String query = "select * from "+table;
 		ResultSet res = DBConnection.sendQuery(query);
