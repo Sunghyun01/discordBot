@@ -36,7 +36,7 @@ public class Ready extends ListenerAdapter{
 	public void onMessageReceived(MessageReceivedEvent event) {
 		User author = event.getAuthor();
 		if(author.isBot()) return; //봇이면 진행 안함
-		if(!event.getTextChannel().getId().contains("609715691972591637")) return; // 이 채널 아니면 안돌아감
+		if(!event.getTextChannel().getId().contains("631136929366147082")) return; // 이 채널 아니면 안돌아감
 		
 		Message msg = event.getMessage();
 		String messageContent = msg.getContentRaw();
@@ -96,6 +96,10 @@ public class Ready extends ListenerAdapter{
 			String getMessage[] = messageContent.split(" ");
 			result_text = jsoup.search_board(getMessage[1]);
 			event.getChannel().sendMessage(result_text).queue();
+		}else if(messageContent.contains("인게임")) {
+			String getMessage[] = messageContent.split(" ");
+			result_text = jsoup.inGame(getMessage[1]);
+			//event.getChannel().sendMessage(result_text).queue();
 		}else if(messageContent.contains("구인")) {
 			String getMessage[] = messageContent.split(" ");
 			//보낸사람
@@ -110,7 +114,7 @@ public class Ready extends ListenerAdapter{
 				
 				int findPlayerLength = 5-userChannerLenght;
 				//보낼 채널 id
-				event.getGuild().getTextChannelById("606035632451747850").sendMessage("["+userChannelName+"] 에서 ["+getMessage[1]+"] 하실분 "+(findPlayerLength)+"명을 구합니다\n"+userName+"님이 작성").queue();
+				event.getGuild().getTextChannelById("631136953856688158").sendMessage("["+userChannelName+"] 에서 ["+getMessage[1]+"] 하실분 "+(findPlayerLength)+"명을 구합니다\n"+userName+"님이 작성").queue();
 			}catch(Exception e) {
 				event.getChannel().sendMessage("보이스채널 내에서 사용할수 있습니다").queue();
 				return;

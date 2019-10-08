@@ -177,7 +177,8 @@ public class jsoup {
         String kda[] = doc.select(".KDA .Content").text().split(" ");
         String position[] = doc.select(".Position span").text().split(" ");
         String main_tier[] = doc.select(".TierRank .TierRank").text().split("\\)");
-        Elements Champion = doc.select(".Champion .ChampionName"); 
+        //multi 에서 보여주는 테이블 시즌 맞춰줘야함
+        Elements Champion = doc.select(".Season-13 .Champion .ChampionName"); 
         Iterator<Element> ChampionTemp = Champion.iterator();
         if(getMessage.length-1 >= 10) {
         	result_text = "요청한 인원의 수가 너무 많습니다 최대인원수 : 9"; 
@@ -193,16 +194,35 @@ public class jsoup {
         		res += cham.text()+" / ";
         	}
         	//제거용
-        	for(int j=0; j<7; j++) {
-        		Element cham = ChampionTemp.next();
+        	for(int k=0; k<7; k++) {
+        		ChampionTemp.next();
         	}
         	int point = point(main_tier[i]);
-        	
         	result_text += ("★"+res2+"★\n최근평점 :"+kda[i]+" 선호포지션 :"+position[i]+"\n솔랭점수 :"+main_tier[i]+") 내전점수 :"+point+"\n");
         	result_text += ("모스트 챔피언 :"+res+"\n\n");
         	
         }
         
+		return result_text;
+	}
+	public static String inGame(String user) {
+		Document doc = null;
+        try {
+        	String url = "https://www.op.gg/summoner/userName="+user;  
+            doc = Jsoup.connect(url).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        Elements summonerName = doc.select(".Team-100 .Body .Row .SummonerName");
+        Iterator<Element> summonerNameTemp = summonerName.iterator();
+        String TierRank = doc.select(".Team-100 .Body .Row .TierRank").text();
+        String Ratio[] = doc.select(".Team-100 .Body .Row .Ratio").text().split("%");
+        String KDA[] = doc.select(".Team-100 .Body .Row .KDA").text().split("KDA");
+        
+        System.out.println(TierRank);
+        System.out.println(Ratio[1]);
+        System.out.println(KDA[1]);
 		return result_text;
 	}
 }

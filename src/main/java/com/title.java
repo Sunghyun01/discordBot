@@ -12,6 +12,7 @@ public class title {
 		help_text += "구인 + [게임모드] : 보이스채널에서 가능 구인글 올려줌\n";
 		help_text += "개발중인것들\n";
 		help_text += "구인 - 인원수 조정기능\n";
+		help_text += "인게임 - 인게임 정보 가져오기\n";
 		help_text += "디비 - 쿼리빌더\n";
 		help_text += "검색 - 카페 내 게시글 검색 (오류많음)\n";
 		help_text += "\nCopyright 2019 SHyun";
