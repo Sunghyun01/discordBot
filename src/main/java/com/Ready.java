@@ -107,7 +107,7 @@ public class Ready extends ListenerAdapter{
 			event.getGuild().getTextChannelById("606035632451747850").sendMessage("```["+userChannelName+"] 에서 ["+getMessage[1]+"] 하실분 "+(5-userChannerLenght)+"명을 구합니다\n"+userName+"님이 작성```").queue();
 		}
 	}
-
+	
 	public void guild(GuildController event, MessageReceivedEvent e) {
 		event.addRolesToMember(e.getMember(), event.getJDA().getRolesByName("개발자", true));
 	}
