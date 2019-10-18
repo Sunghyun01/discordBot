@@ -12,7 +12,7 @@ public class JDABot{
 		
 		JDA jda = null;
 		try {
-			jda = new JDABuilder("NTM2ODYwNjc1MzEwMzU0NDQz.XZyYBA.CbbpMpxjPVRo9CEDnBiXeX2togA").build();
+			jda = new JDABuilder("NTM2ODYwNjc1MzEwMzU0NDQz.XZylMA.J0lDa2ralmuPPZ_vEGRIUbIde_Y").build();
 		} catch (Exception e) {
 			System.out.println("JDABot file Error");
 		}
