@@ -117,6 +117,7 @@ public class Ready extends ListenerAdapter{
 				String link = event.getGuild().getVoiceChannelsByName(userChannelName, true).get(0).createInvite().complete().getUrl();
 				//보낼 채널 id
 				event.getGuild().getTextChannelById("631136953856688158").sendMessage("["+userChannelName+"] 에서 ["+getMessage[1]+"] 하실분 "+(findPlayerLength)+"명을 구합니다\n"+userName+"님이 작성\n"+link).queue();
+				
 			}catch(Exception e) {
 				event.getChannel().sendMessage("보이스채널 내에서 사용할수 있습니다").queue();
 				return;
