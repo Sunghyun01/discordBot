@@ -111,7 +111,7 @@ public class Ready extends ListenerAdapter{
 				//보낸사람이 있는 보이스채널
 				List<VoiceChannel> c = event.getGuild().getVoiceChannelsByName(userChannelName, true);
 				int userChannerLenght = c.size();
-				
+				//몇명 구인하는지
 				int findPlayerLength = 5-userChannerLenght;
 				//초대링크
 				String link = event.getGuild().getVoiceChannelsByName(userChannelName, true).get(0).createInvite().complete().getUrl();
@@ -123,8 +123,28 @@ public class Ready extends ListenerAdapter{
 				return;
 			}
 		}
+		else if(messageContent.contains("@")) {
+			String getMessage[] = messageContent.split(" ");
+			String userName = msg.getAuthor().getName();
+			Guild guild = msg.getGuild();
+			
+			VoiceChannel returnChannel = guild.getVoiceChannelsByName(getMessage[1], true).get(0);
+			GuildController gControl = new GuildController(guild);
+			
+			
+			String query = "select * from team";
+			ResultSet res = DBConnection.sendQuery(query);
+//			try {
+//				while(res.next()) {
+//					gControl.moveVoiceMember((Member)event.getGuild().getMembersByName(res.getString(1), true).get(0).getUser().getName(), returnChannel);
+//					event.getChannel().sendMessage("a"+event.getGuild().getMembersByName(res.getString(1), true).get(0).getUser().getName()).queue();
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+			event.getChannel().sendMessage("a").queue();
+		}
 	}
-	
 	public void guild(GuildController event, MessageReceivedEvent e) {
 		event.addRolesToMember(e.getMember(), event.getJDA().getRolesByName("개발자", true));
 	}

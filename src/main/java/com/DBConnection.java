@@ -67,4 +67,5 @@ public class DBConnection {
 		
 		return result_text;
 	}
-}
+	
+}	
