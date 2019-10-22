@@ -10,6 +10,8 @@ public class title {
 		help_text += "디비 + [테이블명] : 테이블 안에 데이터를 보여줌\n";
 		help_text += "데이터 + [테이블명] + [데이터] : 데이터넣어주는거 \n";
 		help_text += "구인 + [게임모드] : 보이스채널에서 가능 구인글 올려줌\n";
+		help_text += "팀결정 + [MessageId] : 보이스채널 이동\n";
+		help_text += "데려와 + [닉네임] : 내가있는곳으로 잡아옴\n";
 		help_text += "개발중인것들\n";
 		help_text += "구인 - 인원수 조정기능\n";
 		help_text += "인게임 - 인게임 정보 가져오기\n";

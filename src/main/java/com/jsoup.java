@@ -177,6 +177,7 @@ public class jsoup {
         String kda[] = doc.select(".KDA .Content").text().split(" ");
         String position[] = doc.select(".Position span").text().split(" ");
         String main_tier[] = doc.select(".TierRank .TierRank").text().split("\\)");
+        int sumPoint = 0;
         //multi 에서 보여주는 테이블 시즌 맞춰줘야함
         Elements Champion = doc.select(".Season-13 .Champion .ChampionName"); 
         Iterator<Element> ChampionTemp = Champion.iterator();
@@ -200,9 +201,9 @@ public class jsoup {
         	int point = point(main_tier[i]);
         	result_text += ("★"+res2+"★\n최근평점 :"+kda[i]+" 선호포지션 :"+position[i]+"\n솔랭점수 :"+main_tier[i]+") 내전점수 :"+point+"\n");
         	result_text += ("모스트 챔피언 :"+res+"\n\n");
-        	
+        	sumPoint+=point;
         }
-        
+        result_text += ("총점수 :"+sumPoint+"\n\n");
 		return result_text;
 	}
 	public static String inGame(String user) {

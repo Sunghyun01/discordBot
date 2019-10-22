@@ -38,7 +38,7 @@ public class Ready extends ListenerAdapter{
 	public void onMessageReceived(MessageReceivedEvent event) {
 		User author = event.getAuthor();
 		if(author.isBot()) return; //봇이면 진행 안함
-		if(!event.getTextChannel().getId().contains("631136929366147082")) return; // 이 채널 아니면 안돌아감
+		if(!event.getTextChannel().getId().contains("636186383622602782")) return; // 이 채널 아니면 안돌아감
 		
 		Message msg = event.getMessage();
 		String messageContent = msg.getContentRaw();
@@ -114,6 +114,7 @@ public class Ready extends ListenerAdapter{
 				List<VoiceChannel> c = event.getGuild().getVoiceChannelsByName(userChannelName, true);
 				int userChannerLenght = c.size();
 				//몇명 구인하는지
+				
 				int findPlayerLength = 5-userChannerLenght;
 				//초대링크
 				String link = event.getGuild().getVoiceChannelsByName(userChannelName, true).get(0).createInvite().complete().getUrl();
@@ -148,8 +149,7 @@ public class Ready extends ListenerAdapter{
 //					}
 					try {
 						temp = guild.getVoiceChannelsByName(room[roomNum], true).get(0);
-						
-						event.getChannel().sendMessage("한번돔"+room[roomNum]+roomNum).queue();
+						event.getChannel().sendMessage(roomNum+1+"팀 배분중").queue();
 					} catch (IndexOutOfBoundsException e) {
 						event.getChannel().sendMessage("VoiceChannel Name 오류").queue();
 						return;
@@ -160,10 +160,13 @@ public class Ready extends ListenerAdapter{
 						gControl.moveVoiceMember(guild.getMembersByNickname(targetRow[i],true).get(0),temp).queue();
 						
 					} catch (InsufficientPermissionException e) {
-						event.getChannel().sendMessage("옮길수없음").queue();
+						event.getChannel().sendMessage("옮길수없음 >> "+targetRow[i]).queue();
 						return;
 					} catch (IndexOutOfBoundsException e) {
-						event.getChannel().sendMessage("이름제대로 >> "+targetRow[i]).queue();
+						event.getChannel().sendMessage("이름 제대로 >> "+targetRow[i]).queue();
+						return;
+					}catch(IllegalStateException e) {
+						event.getChannel().sendMessage("대기방 들가라 >> "+targetRow[i]).queue();
 						return;
 					}
 				}
@@ -179,12 +182,23 @@ public class Ready extends ListenerAdapter{
 			gControl.moveVoiceMember(guild.getMembersByNickname(contentRow[1],true).get(0),temp).queue();
 			
 		}else if(messageContent.contains("파일")) {
-			File file = new File("D:\\workspace\\discord\\memo.txt");
+			
+			File file = new File("D:\\Users\\조성현\\Downloads\\invoice.xls");
 			long lastModify = file.lastModified();
 			String pattern = "yyyy-MM-dd";
 			SimpleDateFormat simpledateformet = new SimpleDateFormat(pattern);
 			Date lastModifyDate = new Date(lastModify);
 			event.getChannel().sendMessage("최근수정날짜 :"+simpledateformet.format(lastModifyDate)).addFile(file).queue();
+		}else if(messageContent.equals("준비")) {
+			String userChannelName = msg.getMember().getVoiceState().getChannel().getName();
+			List<VoiceChannel> c = event.getGuild().getVoiceChannelsByName(userChannelName, true);
+			List<Member> a = c.get(0).getMembers();
+			
+			String memberList = "";
+			for(int i = 0; i < a.size(); i++) {
+				memberList += a.get(i).getNickname()+"\n";
+			}
+			event.getChannel().sendMessage("```참여자 목록\n"+memberList+"```").queue();
 		}
 	}
 	public void guild(GuildController event, MessageReceivedEvent e) {
