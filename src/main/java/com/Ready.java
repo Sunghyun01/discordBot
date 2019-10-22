@@ -167,6 +167,16 @@ public class Ready extends ListenerAdapter{
 					}
 				}
 			}
+		}else if(messageContent.contains("데려와")) {
+			String[] contentRow = msg.getContentRaw().split(" ");
+			TextChannel textChannel = msg.getTextChannel();
+			Guild guild = textChannel.getGuild();
+			GuildController gControl = new GuildController(guild);
+			String userChannelName = msg.getMember().getVoiceState().getChannel().getName();
+			VoiceChannel temp =  event.getGuild().getVoiceChannelsByName(userChannelName, true).get(0);
+			
+			gControl.moveVoiceMember(guild.getMembersByNickname(contentRow[1],true).get(0),temp).queue();
+			
 		}
 	}
 	public void guild(GuildController event, MessageReceivedEvent e) {
