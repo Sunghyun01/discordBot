@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.GuildController;
 import net.dv8tion.jda.api.requests.restaction.InviteAction;
 import oracle.net.aso.a;
+import com.util.*;
 
 public class Ready extends ListenerAdapter{
 	StringBuffer result = new StringBuffer();
@@ -123,26 +124,49 @@ public class Ready extends ListenerAdapter{
 				return;
 			}
 		}
-		else if(messageContent.contains("@")) {
-			String getMessage[] = messageContent.split(" ");
-			String userName = msg.getAuthor().getName();
-			Guild guild = msg.getGuild();
+		else if(messageContent.contains("팀결정")) {
+			String[] contentRow = msg.getContentRaw().split(" ");
+			//방이름설정
+			String[] room = {"롤1","롤2"};
+			int roomNum = 0;
 			
-			VoiceChannel returnChannel = guild.getVoiceChannelsByName(getMessage[1], true).get(0);
+			TextChannel textChannel = msg.getTextChannel();
+			Guild guild = textChannel.getGuild();
+			
 			GuildController gControl = new GuildController(guild);
+			String mssageId = contentRow[1];
+			String targetContent = textChannel.retrieveMessageById(mssageId).complete().getContentRaw();
+			String[] targetRow = targetContent.split("\n");
+			VoiceChannel temp = null;
 			
-			
-			String query = "select * from team";
-			ResultSet res = DBConnection.sendQuery(query);
-//			try {
-//				while(res.next()) {
-//					gControl.moveVoiceMember((Member)event.getGuild().getMembersByName(res.getString(1), true).get(0).getUser().getName(), returnChannel);
-//					event.getChannel().sendMessage("a"+event.getGuild().getMembersByName(res.getString(1), true).get(0).getUser().getName()).queue();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-			event.getChannel().sendMessage("a").queue();
+			for(int i = 0,system = 1;i<targetRow.length;i++) {
+				if(util.isNumber(targetRow[i].charAt(0))&&targetRow[i].charAt(1) == '팀') {
+//					if(++system+1 > contentRow.length) {
+//						event.getChannel().sendMessage("함수래퍼런스 부족").queue();
+//						return;
+//					}
+					try {
+						temp = guild.getVoiceChannelsByName(room[roomNum], true).get(0);
+						
+						event.getChannel().sendMessage("한번돔"+room[roomNum]+roomNum).queue();
+					} catch (IndexOutOfBoundsException e) {
+						event.getChannel().sendMessage("VoiceChannel Name 오류").queue();
+						return;
+					}
+					roomNum++;
+				}else {
+					try {
+						gControl.moveVoiceMember(guild.getMembersByNickname(targetRow[i],true).get(0),temp).queue();
+						
+					} catch (InsufficientPermissionException e) {
+						event.getChannel().sendMessage("옮길수없음").queue();
+						return;
+					} catch (IndexOutOfBoundsException e) {
+						event.getChannel().sendMessage("이름제대로 >> "+targetRow[i]).queue();
+						return;
+					}
+				}
+			}
 		}
 	}
 	public void guild(GuildController event, MessageReceivedEvent e) {
