@@ -1,5 +1,6 @@
 package com;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.channels.Channel;
 import java.sql.ResultSet;
@@ -177,6 +178,9 @@ public class Ready extends ListenerAdapter{
 			
 			gControl.moveVoiceMember(guild.getMembersByNickname(contentRow[1],true).get(0),temp).queue();
 			
+		}else if(messageContent.contains("파일")) {
+			File file = new File("D:\\workspace\\discord\\memo.txt");
+			event.getChannel().sendMessage(file+"file").addFile(file).queue();
 		}
 	}
 	public void guild(GuildController event, MessageReceivedEvent e) {
