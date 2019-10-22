@@ -180,7 +180,11 @@ public class Ready extends ListenerAdapter{
 			
 		}else if(messageContent.contains("파일")) {
 			File file = new File("D:\\workspace\\discord\\memo.txt");
-			event.getChannel().sendMessage(file+"file").addFile(file).queue();
+			long lastModify = file.lastModified();
+			String pattern = "yyyy-MM-dd";
+			SimpleDateFormat simpledateformet = new SimpleDateFormat(pattern);
+			Date lastModifyDate = new Date(lastModify);
+			event.getChannel().sendMessage("최근수정날짜 :"+simpledateformet.format(lastModifyDate)).addFile(file).queue();
 		}
 	}
 	public void guild(GuildController event, MessageReceivedEvent e) {
