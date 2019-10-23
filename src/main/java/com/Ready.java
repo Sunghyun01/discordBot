@@ -34,6 +34,7 @@ public class Ready extends ListenerAdapter{
 	StringBuffer result = new StringBuffer();
 	String result_text = "";
 	String errorMessage="";
+	String lastMessage = "";
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 		User author = event.getAuthor();
@@ -182,7 +183,6 @@ public class Ready extends ListenerAdapter{
 			gControl.moveVoiceMember(guild.getMembersByNickname(contentRow[1],true).get(0),temp).queue();
 			
 		}else if(messageContent.contains("파일")) {
-			
 			File file = new File("D:\\Users\\조성현\\Downloads\\invoice.xls");
 			long lastModify = file.lastModified();
 			String pattern = "yyyy-MM-dd";
@@ -199,7 +199,18 @@ public class Ready extends ListenerAdapter{
 				memberList += a.get(i).getNickname()+"\n";
 			}
 			event.getChannel().sendMessage("```참여자 목록\n"+memberList+"```").queue();
+		}else if(messageContent.equals("동전")){
+			lastMessage = event.getChannel().sendMessage("동전도는중 스탑을 해주세요").complete().getId();
+		}else if(messageContent.equals("스탑")) {
+			int randNum = (int) ((Math.random()*10)+1);
+			String result = randNum == 1?"앞":"뒤";
+			try {
+				event.getChannel().editMessageById(lastMessage, "결과 : "+result).queue();
+			}catch(IllegalArgumentException e) {
+				event.getChannel().sendMessage("동전먼저 굴려라").queue();
+			}
 		}
+		
 	}
 	public void guild(GuildController event, MessageReceivedEvent e) {
 		event.addRolesToMember(e.getMember(), event.getJDA().getRolesByName("개발자", true));
