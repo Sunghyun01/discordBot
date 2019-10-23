@@ -137,10 +137,8 @@ public class Ready extends ListenerAdapter{
 				String userChannelName = msg.getMember().getVoiceState().getChannel().getName();
 				
 				String query = "select code from findMember where room ='"+userChannelName+"'";
-				System.out.println(query);
 				ResultSet res = DBConnection.sendQuery(query);
 				res.next();
-				System.out.println(res.getString(1));
 				findMemberDel(event, res.getString(1));
 			}catch(NullPointerException e) {
 				event.getChannel().sendMessage("보이스채널 내에서 사용하실 수 있습니다").queue();
@@ -237,6 +235,10 @@ public class Ready extends ListenerAdapter{
 		}else if(messageContent.contains("삭제")) {
 			String[] contentRow = msg.getContentRaw().split(" ");
 			delMessage(event,contentRow[1]);
+		}else if(messageContent.contains("지워")) {
+			String[] contentRow = msg.getContentRaw().split(" ");
+			String last = "";
+			
 		}
 		
 	}
