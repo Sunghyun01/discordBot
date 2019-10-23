@@ -109,6 +109,7 @@ public class Ready extends ListenerAdapter{
 			//보낸사람
 			String userName = msg.getAuthor().getName();
 			lastMessage = msg.getId();
+			delMessage(event, lastMessage);
 			try {
 				//보낸사람이 보이스 채널에 있나?
 				String userChannelName = msg.getMember().getVoiceState().getChannel().getName();
@@ -122,13 +123,15 @@ public class Ready extends ListenerAdapter{
 				String link = event.getGuild().getVoiceChannelsByName(userChannelName, true).get(0).createInvite().complete().getUrl();
 				//보낼 채널 id
 				String bm = event.getGuild().getTextChannelById("631136953856688158").sendMessage("["+userChannelName+"] 에서 ["+getMessage[1]+"] 하실분 "+(findPlayerLength)+"명을 구합니다\n"+userName+"님이 작성\n"+link).complete().getId();
-				delMessage(event, lastMessage);
+				
 				DBConnection.insertQuery("insert into findMember values(fmsequence.nextval,'"+userChannelName+"','"+bm+"')");
-			}catch(Exception e) {
-				event.getChannel().sendMessage("보이스채널 내에서 사용할수 있습니다").queue();
+			}catch(NullPointerException e) {
+				event.getChannel().sendMessage("보이스채널 내에서 사용할 수 있습니다").queue();
 				return;
 			}
 		}else if(messageContent.equals("마감")) {
+			lastMessage = msg.getId();
+			delMessage(event, lastMessage);
 			//보낸사람이 보이스 채널에 있나?
 			try {
 				String userChannelName = msg.getMember().getVoiceState().getChannel().getName();
@@ -139,8 +142,11 @@ public class Ready extends ListenerAdapter{
 				res.next();
 				System.out.println(res.getString(1));
 				findMemberDel(event, res.getString(1));
-			}catch(Exception e) {
-				event.getChannel().sendMessage("SQL 에러").queue();
+			}catch(NullPointerException e) {
+				event.getChannel().sendMessage("보이스채널 내에서 사용하실 수 있습니다").queue();
+				return;
+			}catch(SQLException e) {
+				event.getChannel().sendMessage("SQL : 잘못된 구분입니다\n보이스채널 내에 있으면 게시한 글이 있는지 확인해주세요").queue();
 				return;
 			}
 		}
