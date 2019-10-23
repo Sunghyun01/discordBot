@@ -206,13 +206,22 @@ public class Ready extends ListenerAdapter{
 			String result = randNum == 1?"앞":"뒤";
 			try {
 				event.getChannel().editMessageById(lastMessage, "결과 : "+result).queue();
+				
+				lastMessage = "";
 			}catch(IllegalArgumentException e) {
 				event.getChannel().sendMessage("동전먼저 굴려라").queue();
 			}
+		}else if(messageContent.contains("삭제")) {
+			String[] contentRow = msg.getContentRaw().split(" ");
+			delMessage(event,contentRow[1]);
 		}
 		
 	}
 	public void guild(GuildController event, MessageReceivedEvent e) {
 		event.addRolesToMember(e.getMember(), event.getJDA().getRolesByName("개발자", true));
 	}
+	public void delMessage(MessageReceivedEvent event,String delId) {
+		event.getChannel().deleteMessageById(delId).queue();
+	}
+	
 }
