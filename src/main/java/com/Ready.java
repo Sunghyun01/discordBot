@@ -46,7 +46,7 @@ public class Ready extends ListenerAdapter{
 		String messageContent = msg.getContentRaw();
 		int errorCode = -1;
 		
-		if(messageContent.indexOf("help") == 0 && messageContent.length() == 4) {
+		if(messageContent.equals("명령어")) {
 			event.getChannel().sendMessage(title.help_text()).queue();	
 		}else if(messageContent.contains("디비") ) {
 			result_text = DBConnection.showDB(messageContent);
@@ -210,7 +210,7 @@ public class Ready extends ListenerAdapter{
 			SimpleDateFormat simpledateformet = new SimpleDateFormat(pattern);
 			Date lastModifyDate = new Date(lastModify);
 			event.getChannel().sendMessage("최근수정날짜 :"+simpledateformet.format(lastModifyDate)).addFile(file).queue();
-		}else if(messageContent.equals("준비")) {
+		}else if(messageContent.equals("멤버")) {
 			String userChannelName = msg.getMember().getVoiceState().getChannel().getName();
 			List<VoiceChannel> c = event.getGuild().getVoiceChannelsByName(userChannelName, true);
 			List<Member> a = c.get(0).getMembers();
